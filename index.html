@@ -17,32 +17,32 @@
         }
 
         body {
-            font-family: 'Rajdhani', sans-serif; /* Fonte com aspecto mais técnico */
+            font-family: 'Rajdhani', sans-serif;
             margin: 0;
             background: var(--background-color);
             background: linear-gradient(135deg, #0f0c29 0%, #302b63 50%, #24243e 100%);
             color: var(--text-color);
             display: flex;
             justify-content: center;
-            align-items: center;
+            align-items: flex-start; /* Alinhar ao topo para permitir rolagem com muitos cards */
             min-height: 100vh;
             padding: 20px;
             box-sizing: border-box;
-            overflow-x: hidden; /* Prevenir scroll horizontal caso algo escape */
-            overflow-y: auto; /* Permitir scroll vertical se a lista ficar longa */
+            overflow-x: hidden;
+            overflow-y: auto;
         }
 
-        body::before, body::after { /* Efeito de fundo sutil com pseudo-elementos */
+        body::before, body::after {
             content: '';
             position: fixed;
             width: 100vw;
             height: 100vh;
             background: transparent;
             pointer-events: none;
-            z-index: -1; /* Para garantir que fiquem atrás do conteúdo */
+            z-index: -1;
         }
 
-        body::before { /* Simulação de scanlines */
+        body::before {
             background: linear-gradient(transparent 50%, rgba(0, 0, 0, 0.2) 50%);
             background-size: 100% 4px;
             animation: scanlines 20s linear infinite;
@@ -62,13 +62,13 @@
             box-shadow: 0 0 25px rgba(0, 255, 255, 0.3),
                         0 0 10px rgba(255, 0, 255, 0.2) inset;
             width: 100%;
-            max-width: 650px;
+            max-width: 1200px; /* MODIFICADO - Aumentado para acomodar mais cards lado a lado */
             text-align: center;
             position: relative;
             backdrop-filter: blur(5px);
             -webkit-backdrop-filter: blur(5px);
-            margin-top: 20px; /* Adicionado para dar espaço no topo se a lista for longa */
-            margin-bottom: 20px; /* Adicionado para dar espaço na base se a lista for longa */
+            margin-top: 20px;
+            margin-bottom: 20px;
         }
 
         h1 {
@@ -94,10 +94,17 @@
             list-style-type: none;
             padding: 0;
             margin: 0;
+            display: flex;         /* ADICIONADO - Para layout flexível */
+            flex-wrap: wrap;       /* ADICIONADO - Para quebrar linha quando não couberem mais cards */
+            gap: 25px;             /* ADICIONADO - Espaçamento entre os cards */
+            justify-content: center; /* ADICIONADO - Para centralizar os cards no contêiner */
         }
 
         li {
-            margin-bottom: 18px;
+            /* margin-bottom: 18px; */ /* REMOVIDO - O 'gap' no 'ul' cuida do espaçamento */
+            flex: 1 1 300px;        /* ADICIONADO - Cards podem crescer/encolher, base de 300px de largura. Ajuste conforme necessário. */
+            display: flex;          /* ADICIONADO - Para que o 'a' (link) preencha a altura do 'li' corretamente */
+                                    /* Isso garante que todos os cards na mesma linha tenham a mesma altura */
         }
 
         a.link-item {
@@ -115,6 +122,12 @@
             position: relative;
             overflow: hidden;
             box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+            width: 100%;            /* ADICIONADO - Garante que o link ocupe toda a largura do 'li' */
+            height: 100%;           /* ADICIONADO - Garante que o link ocupe toda a altura do 'li' */
+            display: flex;          /* ADICIONADO - Para permitir o centramento vertical do conteúdo do link (span) */
+            flex-direction: column; /* ADICIONADO - Para empilhar o conteúdo verticalmente (útil para o span) */
+            justify-content: center;/* ADICIONADO - Centraliza o span verticalmente dentro do card */
+            align-items: center;    /* ADICIONADO - Centraliza o span horizontalmente dentro do card */
         }
 
         a.link-item:before {
@@ -168,8 +181,9 @@
         }
 
         a.link-item span {
-            position: relative;
-            z-index: 1;
+            position: relative; /* Mantido para z-index e outros posicionamentos se necessário */
+            z-index: 1;         /* Mantido */
+            /* O alinhamento do span agora é controlado pelas propriedades flex do 'a.link-item' */
         }
     </style>
 </head>
